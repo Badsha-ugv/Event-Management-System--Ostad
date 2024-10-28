@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.utils import timezone
 
 from auth_app.models import UserProfile
 
@@ -12,13 +13,13 @@ class Event(models.Model):
     )
     
     title = models.CharField(max_length=200)
+    venue = models.TextField(max_length=100)
     description = models.TextField()
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
+    date = models.DateTimeField(default=timezone.now())
+    duration = models.IntegerField(default=1)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    attendees = models.ManyToManyField(User, related_name='attended_events')
-    participants = models.ManyToManyField(User, related_name='participant_events')
+    
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

@@ -39,3 +39,8 @@ def login_user(request):
             else:
                 return render(request, 'auth_app/login.html', {'form': form, 'error': 'Username or password is incorrect'})
     return render(request, 'auth_app/login.html', {'form':form})
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('home')
