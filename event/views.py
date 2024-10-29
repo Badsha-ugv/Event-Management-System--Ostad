@@ -38,3 +38,10 @@ def create_event(request):
         else:
             return render(request, 'event/create_form.html', {'form': form})
     return render(request, 'event/create_form.html')
+
+def event_details(request, event_id):
+    event = Event.objects.get(id=event_id)
+    context = {
+        'event': event
+    }
+    return render(request, 'event/event_details.html', context)

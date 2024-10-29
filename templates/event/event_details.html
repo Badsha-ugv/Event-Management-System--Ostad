@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'includes/navbar.html' %}
+
+<div class="container">
+
+<div class="row my-3">
+    <div class="col-md-7 mx-auto">
+        <h1 class="">{{event.title|capfirst}}</h1>
+        <p>
+            <span>
+                <i class="fa-solid fa-map-location-dot"></i> {{ event.venue }}
+                <i class="fa-solid fa-calendar-alt"></i> Date: {{ event.date|date:"F d, Y" }}
+                <i class="fa-solid fa-clock"></i> {{ event.duration }} Days
+            </span>
+        </p>
+        <hr>
+        <p class="lead">{% lorem %}</p>
+
+        <div class="book-event">
+            <a href="" class="btn btn-info ">Book This Event</a>
+            <a href="" class="btn btn-warning ">Update This Event</a>
+            <a href="" class="btn btn-danger ">Delete This Event</a>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="map">
+            <!-- Map goes here -->
+             <!-- Use Google Maps API to generate the map -->
+             <!-- Replace 'API_KEY' with your actual Google Maps API key -->
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d58430.489375892466!2d90.440813!3d23.75074600000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sbd!4v1730213849437!5m2!1sen!2sbd"
+                width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+        </div>
+
+        <div class="perticipants">
+            <h2>Participants</h2>
+            <ul>
+                {% for participant in event.participants.all %}
+                <li>{{ participant.name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+</div>
+{% endblock %}

@@ -20,6 +20,7 @@ class Event(models.Model):
     duration = models.IntegerField(default=1)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+    participants = models.ManyToManyField(User, related_name='participants')
     
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -29,4 +30,6 @@ class Event(models.Model):
     
     def get_absolute_url(self):
         return reverse('event-detail', kwargs={'pk': self.pk})
-    
+
+
+        
