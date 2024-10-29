@@ -2,9 +2,94 @@
 {% load static %}
 
 {% block content %}
-
+{% include 'includes/navbar.html' %}
 <div class="container">
-    <h3>Welcome {{request.user}}</h3>
+
+
+    <div class="event-list w-75">
+
+        <div class="search-area my-3">
+            <div class="search-box  mx-auto text-center ">
+                <form method="get" action="" class="d-flex">
+                    <input type="search" name="search_q" placeholder="Search Event" class="form-control" id="">
+                    <button type="submit" class="btn btn-secondary ml-3">Search</button>
+                </form>
+            </div>
+        </div>
+
+        {% for event in events %}
+        <div class="card p-2 my-2 shadow-sm ">
+            <div class="card-body row">
+
+                <div class="col-8 left">
+                    <h2 class="card-title">
+                        {{ event.title }}</h2>
+                    <p class="card-text">
+                        <i class="fa-solid fa-map-location-dot"></i> {{ event.description }}
+                    </p>
+                    <p>
+                        <i class="fa-solid fa-calendar-alt"></i> Date: {{ event.date|date:"F d, Y" }}
+                    </p>
+                    <p>
+                        <i class="fa-solid fa-clock"></i> Duration: {{ event.duration }} Days
+                    </p>
+                    <a href="" class="btn btn-primary btn-sm">View Details</a>
+                </div>
+                <div class="col-4 right text-center" style="height: 200px; width:200px;">
+                    <img src="{% static './images/flag.jpg' %}" class="w-100 h-100 contain" alt="">
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if events.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{events.previous_page_number}}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item">
+                    <a class="page-link disabled" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                {% endif %}
+                {% for page_num in events.paginator.page_range %}
+                {% if page_num == events.number %}
+                <li class="page-item"><a class="page-link disabled" >{{page_num}}</a></li>
+                {% else %}
+                <a href="?page={{ page_num }}" class="page-link">{{ page_num }}</a>
+               
+                {% endif %}
+                {% endfor %}
+
+                {% if events.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{events.next_page_number}}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item">
+                    <a class="page-link disabled" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+
+
+    </div>
 </div>
 
 {% endblock %}
