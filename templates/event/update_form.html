@@ -55,10 +55,17 @@
                                 <label for="id_duration">Event Duration (Days)</label>
                                 <input type="number" name="duration" value="{{event.duration}}" id="id_duration" class="form-control">
                             </div>
+                            <div class="col">
+                                <label for="id_limit">Event Limit</label>
+                                <input type="number" name="limit" value="{{event.limit}}" id="id_limit" class="form-control">
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="id_description">Detail Descriptions</label>
-                            <textarea name="description"  id="id_description" class="form-control">{{event.description}}</textarea>
+                            {{form.media}}
+                            <!-- <textarea name="description"  id="id_description" class="form-control">{{event.description}}</textarea> -->
+                             {{form.description}}
+                             
                         </div>
                         <input type="submit" value="Update Event" class="btn btn-primary">
                     </form>

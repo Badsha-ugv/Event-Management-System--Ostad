@@ -25,19 +25,12 @@
         "documentation": {}
     },
     {
-        "label": "settings",
-        "importPath": "django.conf",
-        "description": "django.conf",
+        "label": "django.db",
+        "kind": 6,
         "isExtraImport": true,
-        "detail": "django.conf",
-        "documentation": {}
-    },
-    {
-        "label": "settings",
-        "importPath": "django.conf",
-        "description": "django.conf",
-        "isExtraImport": true,
-        "detail": "django.conf",
+        "importPath": "django.db",
+        "description": "django.db",
+        "detail": "django.db",
         "documentation": {}
     },
     {
@@ -50,6 +43,38 @@
     },
     {
         "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
         "importPath": "django.db",
         "description": "django.db",
         "isExtraImport": true,
@@ -323,6 +348,14 @@
         "documentation": {}
     },
     {
+        "label": "reverse",
+        "importPath": "django.shortcuts",
+        "description": "django.shortcuts",
+        "isExtraImport": true,
+        "detail": "django.shortcuts",
+        "documentation": {}
+    },
+    {
         "label": "render",
         "importPath": "django.shortcuts",
         "description": "django.shortcuts",
@@ -379,12 +412,37 @@
         "documentation": {}
     },
     {
+        "label": "Event",
+        "importPath": "event.models",
+        "description": "event.models",
+        "isExtraImport": true,
+        "detail": "event.models",
+        "documentation": {}
+    },
+    {
         "label": "datetime",
         "kind": 6,
         "isExtraImport": true,
         "importPath": "datetime",
         "description": "datetime",
         "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "ckeditor.fields",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "ckeditor.fields",
+        "description": "ckeditor.fields",
+        "detail": "ckeditor.fields",
+        "documentation": {}
+    },
+    {
+        "label": "RichTextField",
+        "importPath": "ckeditor.fields",
+        "description": "ckeditor.fields",
+        "isExtraImport": true,
+        "detail": "ckeditor.fields",
         "documentation": {}
     },
     {
@@ -528,7 +586,7 @@
         "kind": 5,
         "importPath": "auth_app.urls",
         "description": "auth_app.urls",
-        "peekOfCode": "urlpatterns = [\n    path(\"register/\", views.register, name=\"register\"),\n    path(\"login/\", views.login_user, name=\"login\"),\n    path(\"logout/\", views.logout_user, name=\"logout\"),\n]",
+        "peekOfCode": "urlpatterns = [\n    path(\"register/\", views.register, name=\"register\"),\n    path(\"login/\", views.login_user, name=\"login\"),\n    path(\"logout/\", views.logout_user, name=\"logout\"),\n    path(\"profile/<int:user_id>/\", views.profile, name=\"profile\"),\n    path(\"profile/<int:user_id>/update/\", views.update_profile, name=\"update_profile\"),\n]",
         "detail": "auth_app.urls",
         "documentation": {}
     },
@@ -555,7 +613,25 @@
         "kind": 2,
         "importPath": "auth_app.views",
         "description": "auth_app.views",
-        "peekOfCode": "def logout_user(request):\n    logout(request)\n    return redirect('home')",
+        "peekOfCode": "def logout_user(request):\n    logout(request)\n    return redirect('home')\ndef profile(request, user_id=None):\n    user = User.objects.get(id=user_id)\n    my_events = Event.objects.filter(author=user)\n    if user.is_authenticated:\n        profile = UserProfile.objects.get(user=user)\n        context = {\n            'profile': profile,",
+        "detail": "auth_app.views",
+        "documentation": {}
+    },
+    {
+        "label": "profile",
+        "kind": 2,
+        "importPath": "auth_app.views",
+        "description": "auth_app.views",
+        "peekOfCode": "def profile(request, user_id=None):\n    user = User.objects.get(id=user_id)\n    my_events = Event.objects.filter(author=user)\n    if user.is_authenticated:\n        profile = UserProfile.objects.get(user=user)\n        context = {\n            'profile': profile,\n            'my_events': my_events\n        }\n        return render(request, 'auth_app/profile.html', context)",
+        "detail": "auth_app.views",
+        "documentation": {}
+    },
+    {
+        "label": "update_profile",
+        "kind": 2,
+        "importPath": "auth_app.views",
+        "description": "auth_app.views",
+        "peekOfCode": "def update_profile(request, user_id= None):\n    user = User.objects.get(id=user_id)\n    profile = UserProfile.objects.get(user=user)\n    if request.user == user and request.user.is_authenticated:\n        if request.method == 'POST':\n            f_name = request.POST.get('f_name')\n            l_name = request.POST.get('l_name')\n            phone = request.POST.get('phone')\n            email = request.POST.get('email')\n            address = request.POST.get('address')",
         "detail": "auth_app.views",
         "documentation": {}
     },
@@ -564,35 +640,53 @@
         "kind": 6,
         "importPath": "event.migrations.0001_initial",
         "description": "event.migrations.0001_initial",
-        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n        migrations.swappable_dependency(settings.AUTH_USER_MODEL),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='Event',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n        migrations.swappable_dependency(settings.AUTH_USER_MODEL),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='Category',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),",
         "detail": "event.migrations.0001_initial",
         "documentation": {}
     },
     {
         "label": "Migration",
         "kind": 6,
-        "importPath": "event.migrations.0002_remove_event_participants_alter_event_date",
-        "description": "event.migrations.0002_remove_event_participants_alter_event_date",
-        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('event', '0001_initial'),\n    ]\n    operations = [\n        migrations.RemoveField(\n            model_name='event',\n            name='participants',\n        ),\n        migrations.AlterField(",
-        "detail": "event.migrations.0002_remove_event_participants_alter_event_date",
+        "importPath": "event.migrations.0002_alter_event_category_alter_event_date",
+        "description": "event.migrations.0002_alter_event_category_alter_event_date",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('event', '0001_initial'),\n    ]\n    operations = [\n        migrations.AlterField(\n            model_name='event',\n            name='category',\n            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='events', to='event.category'),\n        ),",
+        "detail": "event.migrations.0002_alter_event_category_alter_event_date",
         "documentation": {}
     },
     {
         "label": "Migration",
         "kind": 6,
-        "importPath": "event.migrations.0003_event_participants_alter_event_date_and_more",
-        "description": "event.migrations.0003_event_participants_alter_event_date_and_more",
-        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('event', '0002_remove_event_participants_alter_event_date'),\n        migrations.swappable_dependency(settings.AUTH_USER_MODEL),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='event',\n            name='participants',\n            field=models.ManyToManyField(related_name='participants', to=settings.AUTH_USER_MODEL),",
-        "detail": "event.migrations.0003_event_participants_alter_event_date_and_more",
+        "importPath": "event.migrations.0003_event_limit_alter_event_date",
+        "description": "event.migrations.0003_event_limit_alter_event_date",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('event', '0002_alter_event_category_alter_event_date'),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='event',\n            name='limit',\n            field=models.IntegerField(default=5),\n        ),",
+        "detail": "event.migrations.0003_event_limit_alter_event_date",
         "documentation": {}
     },
     {
         "label": "Migration",
         "kind": 6,
-        "importPath": "event.migrations.0004_alter_event_date_alter_event_participants",
-        "description": "event.migrations.0004_alter_event_date_alter_event_participants",
-        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('event', '0003_event_participants_alter_event_date_and_more'),\n        migrations.swappable_dependency(settings.AUTH_USER_MODEL),\n    ]\n    operations = [\n        migrations.AlterField(\n            model_name='event',\n            name='date',\n            field=models.DateTimeField(default=datetime.datetime(2024, 10, 30, 3, 5, 13, 253345, tzinfo=datetime.timezone.utc)),",
-        "detail": "event.migrations.0004_alter_event_date_alter_event_participants",
+        "importPath": "event.migrations.0004_alter_event_date",
+        "description": "event.migrations.0004_alter_event_date",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('event', '0003_event_limit_alter_event_date'),\n    ]\n    operations = [\n        migrations.AlterField(\n            model_name='event',\n            name='date',\n            field=models.DateTimeField(default=datetime.datetime(2024, 10, 30, 9, 52, 50, 844266, tzinfo=datetime.timezone.utc)),\n        ),",
+        "detail": "event.migrations.0004_alter_event_date",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "event.migrations.0005_alter_event_date_alter_event_description",
+        "description": "event.migrations.0005_alter_event_date_alter_event_description",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('event', '0004_alter_event_date'),\n    ]\n    operations = [\n        migrations.AlterField(\n            model_name='event',\n            name='date',\n            field=models.DateTimeField(default=datetime.datetime(2024, 10, 30, 10, 45, 32, 164477, tzinfo=datetime.timezone.utc)),\n        ),",
+        "detail": "event.migrations.0005_alter_event_date_alter_event_description",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "event.migrations.0006_alter_event_options_alter_event_date",
+        "description": "event.migrations.0006_alter_event_options_alter_event_date",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('event', '0005_alter_event_date_alter_event_description'),\n    ]\n    operations = [\n        migrations.AlterModelOptions(\n            name='event',\n            options={'ordering': ['-created']},\n        ),\n        migrations.AlterField(",
+        "detail": "event.migrations.0006_alter_event_options_alter_event_date",
         "documentation": {}
     },
     {
@@ -609,8 +703,17 @@
         "kind": 6,
         "importPath": "event.forms",
         "description": "event.forms",
-        "peekOfCode": "class EventForm(forms.ModelForm):\n    class Meta:\n        model = Event\n        exclude = ('author','status', 'participants')",
+        "peekOfCode": "class EventForm(forms.ModelForm):\n    class Meta:\n        model = Event\n        exclude = ('author','status', 'participants','category')",
         "detail": "event.forms",
+        "documentation": {}
+    },
+    {
+        "label": "Category",
+        "kind": 6,
+        "importPath": "event.models",
+        "description": "event.models",
+        "peekOfCode": "class Category(models.Model):\n    name = models.CharField(max_length=50)\n    created = models.DateTimeField(auto_now_add=True)\n    updated = models.DateTimeField(auto_now=True)\n    def __str__(self):\n        return self.name\nclass Event(models.Model):\n    STATUS_CHOICES = (\n        ('draft', 'Draft'),\n        ('published', 'Published'),",
+        "detail": "event.models",
         "documentation": {}
     },
     {
@@ -618,7 +721,7 @@
         "kind": 6,
         "importPath": "event.models",
         "description": "event.models",
-        "peekOfCode": "class Event(models.Model):\n    STATUS_CHOICES = (\n        ('draft', 'Draft'),\n        ('published', 'Published'),\n        ('cancelled', 'Cancelled'),\n        ('complete', 'Complete'),\n    )\n    title = models.CharField(max_length=200)\n    venue = models.TextField(max_length=100)\n    description = models.TextField()",
+        "peekOfCode": "class Event(models.Model):\n    STATUS_CHOICES = (\n        ('draft', 'Draft'),\n        ('published', 'Published'),\n        ('cancelled', 'Cancelled'),\n        ('complete', 'Complete'),\n    )\n    title = models.CharField(max_length=200)\n    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='events')\n    venue = models.TextField(max_length=100)",
         "detail": "event.models",
         "documentation": {}
     },
@@ -636,7 +739,7 @@
         "kind": 2,
         "importPath": "event.views",
         "description": "event.views",
-        "peekOfCode": "def home(request):\n    events = Event.objects.filter(status='published')\n    search_q = request.GET.get('search_q')\n    if search_q:\n        events = events.filter(title__icontains=search_q)\n    paginator = Paginator(events, 2)\n    page_number = request.GET.get('page')\n    events = paginator.get_page(page_number)\n    context = {\n        'events': events",
+        "peekOfCode": "def home(request):\n    events = Event.objects.filter(status='published')\n    categories = Category.objects.all()\n    search_q = request.GET.get('search_q')\n    category = request.GET.get('category')\n    if search_q:\n        events = events.filter(title__icontains=search_q)\n    if category:\n        events = events.filter(category__id=category)\n    paginator = Paginator(events, 2)",
         "detail": "event.views",
         "documentation": {}
     },
@@ -645,7 +748,7 @@
         "kind": 2,
         "importPath": "event.views",
         "description": "event.views",
-        "peekOfCode": "def create_event(request):\n    if request.method == 'POST':\n        form = EventForm(request.POST)\n        if form.is_valid():\n            event = form.save(commit=False)\n            event.author = request.user\n            event.status = 'published'\n            event.save()\n            return redirect('home')\n        else:",
+        "peekOfCode": "def create_event(request):\n    category = Category.objects.all()\n    form = EventForm()\n    if request.method == 'POST':\n        form = EventForm(request.POST)\n        if form.is_valid():\n            event = form.save(commit=False)\n            category_id = request.POST['category']\n            # if not category_id:\n            #     category = Category.objects.get(name='others')",
         "detail": "event.views",
         "documentation": {}
     },
@@ -654,7 +757,7 @@
         "kind": 2,
         "importPath": "event.views",
         "description": "event.views",
-        "peekOfCode": "def event_details(request, event_id):\n    event = Event.objects.get(id=event_id)\n    context = {\n        'event': event\n    }\n    return render(request, 'event/event_details.html', context)\ndef update_event(request, event_id):\n    event = Event.objects.get(id=event_id)\n    if request.user !=  event.author:\n        return redirect('home')",
+        "peekOfCode": "def event_details(request, event_id):\n    event = Event.objects.get(id=event_id)\n    context = {\n        'event': event\n    }\n    return render(request, 'event/event_details.html', context)\ndef update_event(request, event_id):\n    event = Event.objects.get(id=event_id)\n    form = EventForm(instance=event)\n    if request.user !=  event.author:",
         "detail": "event.views",
         "documentation": {}
     },
@@ -663,7 +766,7 @@
         "kind": 2,
         "importPath": "event.views",
         "description": "event.views",
-        "peekOfCode": "def update_event(request, event_id):\n    event = Event.objects.get(id=event_id)\n    if request.user !=  event.author:\n        return redirect('home')\n    if request.method == 'POST':\n        form = EventForm(request.POST, instance=event)\n        print(form)\n        # pritn(request.POST)\n        if form.is_valid():\n            cd = form.cleaned_data",
+        "peekOfCode": "def update_event(request, event_id):\n    event = Event.objects.get(id=event_id)\n    form = EventForm(instance=event)\n    if request.user !=  event.author:\n        return redirect('home')\n    if request.method == 'POST':\n        form = EventForm(request.POST, instance=event)\n        print(form)\n        # pritn(request.POST)\n        if form.is_valid():",
         "detail": "event.views",
         "documentation": {}
     },
@@ -861,7 +964,7 @@
         "kind": 5,
         "importPath": "home.settings",
         "description": "home.settings",
-        "peekOfCode": "STATICFILES_DIRS = [\n    os.path.join(BASE_DIR / 'static')\n]\nSTATIC_ROOT = BASE_DIR / 'staticfiles' \n# Default primary key field type\n# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\nLOGIN_REDIRECT_URL = 'login/'\nLOGIN_URL = 'login/'",
+        "peekOfCode": "STATICFILES_DIRS = [\n    os.path.join(BASE_DIR / 'static')\n]\nSTATIC_ROOT = BASE_DIR / 'staticfiles' \n# Default primary key field type\n# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\nLOGIN_REDIRECT_URL = 'login/'\nLOGIN_URL = 'login/'\nCKEDITOR_CONFIGS = {",
         "detail": "home.settings",
         "documentation": {}
     },
@@ -870,7 +973,7 @@
         "kind": 5,
         "importPath": "home.settings",
         "description": "home.settings",
-        "peekOfCode": "STATIC_ROOT = BASE_DIR / 'staticfiles' \n# Default primary key field type\n# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\nLOGIN_REDIRECT_URL = 'login/'\nLOGIN_URL = 'login/'",
+        "peekOfCode": "STATIC_ROOT = BASE_DIR / 'staticfiles' \n# Default primary key field type\n# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\nLOGIN_REDIRECT_URL = 'login/'\nLOGIN_URL = 'login/'\nCKEDITOR_CONFIGS = {\n    'default': {\n        'toolbar': 'full',\n    },",
         "detail": "home.settings",
         "documentation": {}
     },
@@ -879,7 +982,7 @@
         "kind": 5,
         "importPath": "home.settings",
         "description": "home.settings",
-        "peekOfCode": "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\nLOGIN_REDIRECT_URL = 'login/'\nLOGIN_URL = 'login/'",
+        "peekOfCode": "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\nLOGIN_REDIRECT_URL = 'login/'\nLOGIN_URL = 'login/'\nCKEDITOR_CONFIGS = {\n    'default': {\n        'toolbar': 'full',\n    },\n}",
         "detail": "home.settings",
         "documentation": {}
     },
@@ -888,7 +991,7 @@
         "kind": 5,
         "importPath": "home.settings",
         "description": "home.settings",
-        "peekOfCode": "LOGIN_REDIRECT_URL = 'login/'\nLOGIN_URL = 'login/'",
+        "peekOfCode": "LOGIN_REDIRECT_URL = 'login/'\nLOGIN_URL = 'login/'\nCKEDITOR_CONFIGS = {\n    'default': {\n        'toolbar': 'full',\n    },\n}",
         "detail": "home.settings",
         "documentation": {}
     },
@@ -897,7 +1000,16 @@
         "kind": 5,
         "importPath": "home.settings",
         "description": "home.settings",
-        "peekOfCode": "LOGIN_URL = 'login/'",
+        "peekOfCode": "LOGIN_URL = 'login/'\nCKEDITOR_CONFIGS = {\n    'default': {\n        'toolbar': 'full',\n    },\n}",
+        "detail": "home.settings",
+        "documentation": {}
+    },
+    {
+        "label": "CKEDITOR_CONFIGS",
+        "kind": 5,
+        "importPath": "home.settings",
+        "description": "home.settings",
+        "peekOfCode": "CKEDITOR_CONFIGS = {\n    'default': {\n        'toolbar': 'full',\n    },\n}",
         "detail": "home.settings",
         "documentation": {}
     },

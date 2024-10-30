@@ -1,9 +1,13 @@
-from django.shortcuts import render, redirect
+import django.db
+from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login , logout 
 
+import django.urls
 from .models import UserProfile
 from .forms import RegisterForm , LoginForm
+
+from event.models import Event
 
 def register(request):
     if request.method == 'POST':
@@ -45,3 +49,42 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     return redirect('home')
+
+
+def profile(request, user_id=None):
+    user = User.objects.get(id=user_id)
+    my_events = Event.objects.filter(author=user)
+    if user.is_authenticated:
+        profile = UserProfile.objects.get(user=user)
+        context = {
+            'profile': profile,
+            'my_events': my_events
+        }
+        return render(request, 'auth_app/profile.html', context)
+    else:
+        return redirect('home')
+    
+def update_profile(request, user_id= None):
+    user = User.objects.get(id=user_id)
+    profile = UserProfile.objects.get(user=user)
+
+    if request.user == user and request.user.is_authenticated:
+        if request.method == 'POST':
+            f_name = request.POST.get('f_name')
+            l_name = request.POST.get('l_name')
+            phone = request.POST.get('phone')
+            email = request.POST.get('email')
+            address = request.POST.get('address')
+
+            avatar = request.FILES.get('avatar')
+            
+            user.first_name = f_name
+            user.last_name = l_name
+            user.email = email
+            user.save()
+            profile.phone = phone
+            profile.address = address
+            if avatar:
+                profile.avatar = avatar
+            profile.save()
+            return redirect(reverse('profile', args=(user.id,)))

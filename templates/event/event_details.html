@@ -7,16 +7,19 @@
 
 <div class="row my-3">
     <div class="col-md-7 mx-auto">
-        <h1 class="">{{event.title|capfirst}}</h1>
+        <h1 class="">{{event.title|upper}}</h1>
         <p>
-            <span>
+            <span class="d-flex justify-content-between ">
                 <i class="fa-solid fa-map-location-dot"></i> {{ event.venue }}
                 <i class="fa-solid fa-calendar-alt"></i> Date: {{ event.date|date:"F d, Y" }}
                 <i class="fa-solid fa-clock"></i> {{ event.duration }} Days
+                <i class="fa-solid fa-users"></i> {{ event.limit }} Maximum
             </span>
         </p>
         <hr>
-        <p class="lead">{% lorem %}</p>
+        <p class="lead">
+            {{ event.description|safe|capfirst }}
+        </p>
 
         <div class="book-event">
             {% if not event.author == request.user %}
@@ -28,7 +31,11 @@
                 <a href="{% url 'cancel_booking' event.id %}" class="btn btn-outline-danger">Cancel Booking</a>
                 {% else %}
 
+                {% if event.is_full %}
+                <a class="btn btn-secondary disabled">Full</a>
+                {% else %}
                 <a href="{% url 'book_event' event.id %}" class="btn btn-info ">Book This Event</a>
+                {% endif %}
                 {% endif %}
            
             {% endif %}

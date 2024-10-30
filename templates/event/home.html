@@ -3,10 +3,10 @@
 
 {% block content %}
 {% include 'includes/navbar.html' %}
-<div class="container">
+<div class="container ">
 
-
-    <div class="event-list w-75">
+    <div class="row my-3">
+    <div class=" col-9 event-list border">
 
         <div class="search-area my-3">
             <div class="search-box  mx-auto text-center ">
@@ -43,11 +43,20 @@
                         {% endif %}
                     <!-- </button> -->
                 </div>
-                <div class="col-4 right text-center" style="height: 200px; width:200px;">
-                    <img src="{% static './images/flag.jpg' %}" class="w-100 h-100 contain" alt="">
+                <div class="col-4 right text-center d-flex flex-column" style="height: 200px; width:200px;">
+                    <img src="{% static './images/flag.jpg' %}" class="w-100 h-100 contain " alt="">
+                    <h1 class="">
+                        {% if not event.is_full %}
+                        {{event.participants.all|length}} 
+                        {% else %}
+                         <span class="bg-danger p-2 text-white ">Full</span>
+                         {% endif %}
+                    </h1>
                 </div>
             </div>
         </div>
+        {% empty %}
+        <h3 class="text-muted py-5">No Event Available</h3>
         {% endfor %}
 
 
@@ -98,6 +107,29 @@
 
 
     </div>
+
+    <div class="col-3">
+        <div class="card rounded-0 p-3">
+            <h3 class="card-header bg-primary text-white">Category</h3> 
+            <ul class="list-group list-group-flush ">
+                <li class="list-group-item">
+                    <a href="{% url 'home' %}" class="d-flex justify-content-between">
+                        <span>All Event </span>
+                        <span class="badge badge-secondary text-white "> {{ total }}</span>
+                    </a>
+                </li>
+                {% for category in categories %}
+                <li class="list-group-item">
+                    <a href="?category={{category.id}}" class=" d-flex justify-content-between">
+                         <span>{{ category.name }}</span> 
+                         <span class="badge badge-secondary text-white ">{{ category.events.count }}</span> 
+                        </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
 </div>
 
 {% endblock %}
