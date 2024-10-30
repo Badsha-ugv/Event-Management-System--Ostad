@@ -36,12 +36,8 @@
                     <p>
                         <i class="fa-solid fa-user-gear"></i> Author : {{event.author|upper}}
                     </p>
-                    <a href="{% url 'event_details' event.id %}" class="btn btn-primary btn-sm">View Details</a>  &nbsp;
-                    <!-- <button class="b btn-sm"> -->
-                        {% if request.user in event.participants.all %}
-                        <i class="fa-solid fa-circle-check"></i>
-                        {% endif %}
-                    <!-- </button> -->
+                    <a href="{% url 'event_details' event.id %}" class="btn btn-primary btn-sm">View Details</a>
+                    <a href="{% url 'cancel_booking' event.id %}" class="btn btn-outline-danger btn-sm">Cancel Booking</a>
                 </div>
                 <div class="col-4 right text-center" style="height: 200px; width:200px;">
                     <img src="{% static './images/flag.jpg' %}" class="w-100 h-100 contain" alt="">

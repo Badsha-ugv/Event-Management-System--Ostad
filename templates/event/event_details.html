@@ -19,9 +19,23 @@
         <p class="lead">{% lorem %}</p>
 
         <div class="book-event">
-            <a href="" class="btn btn-info ">Book This Event</a>
-            <a href="" class="btn btn-warning ">Update This Event</a>
-            <a href="" class="btn btn-danger ">Delete This Event</a>
+            {% if not event.author == request.user %}
+            
+            <form action="{% url 'book_event' event.id %}" method="post">
+                {% csrf_token %}
+                {% if request.user in event.participants.all %}
+                <a  class="btn btn-secondary disabled">Already Booked</a>
+                <a href="{% url 'cancel_booking' event.id %}" class="btn btn-outline-danger">Cancel Booking</a>
+                {% else %}
+
+                <a href="{% url 'book_event' event.id %}" class="btn btn-info ">Book This Event</a>
+                {% endif %}
+           
+            {% endif %}
+            {% if event.author == request.user %}
+            <a href="{% url 'update_event' event.id %}" class="btn btn-warning ">Update This Event</a>
+            <a href="{% url 'delete_event' event.id %}" class="btn btn-danger ">Delete This Event</a>
+            {% endif %}
         </div>
     </div>
     <div class="col-md-5">
@@ -40,7 +54,7 @@
             <h2>Participants</h2>
             <ul>
                 {% for participant in event.participants.all %}
-                <li>{{ participant.name }}</li>
+                <li>{{ participant }}</li>
                 {% endfor %}
             </ul>
         </div>
