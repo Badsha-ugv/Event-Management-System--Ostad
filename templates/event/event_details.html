@@ -34,7 +34,9 @@
                 {% if event.is_full %}
                 <a class="btn btn-secondary disabled">Full</a>
                 {% else %}
+                {% if request.user.is_authenticated %}
                 <a href="{% url 'book_event' event.id %}" class="btn btn-info ">Book This Event</a>
+                {% endif %}
                 {% endif %}
                 {% endif %}
            
