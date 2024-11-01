@@ -13,6 +13,8 @@
         <div class="col-md-8 mx-auto d-flex justify-content-center align-items-center mt-5">
 
             <div class="card card-body  shadow ">
+                
+
                 <h3 class="text-center pb-2 fw-bold ">Login Form</h3>
                 <div class="row">
                     <div class="col lgoin-img  ">
@@ -29,9 +31,24 @@
                                 <label for="id_password">Password</label>
                                 <input type="password" class="form-control" id="id_password" name="password" required>
                             </div>
+
                             {% if error %}
-                            <p style="color: red;">{{ error }}</p>
+                            <div class="alert alert-danger alert-dismissible fade show" style="position: relative;" role="alert">
+                                
+                            <p>
+                                {{error}}
+                            </p>
+                                <div class="cls-btn text-end ">
+                            
+                                    <button type="button" class="btn-close btn-sm outline-0"
+                                        style="position: absolute; right:0; top:0; background-color: transparent; border:none; padding:5px;"
+                                        data-bs-dismiss="alert" aria-label="Close">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                </div>
+                            </div>
                             {% endif %}
+
                             <div class="text-center">
                                 <input type="submit" class="btn btn-primary mt-2 btn-sm w-75" value="Login">
                                 <p>

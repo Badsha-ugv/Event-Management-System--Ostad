@@ -54,16 +54,18 @@
              <!-- Replace 'API_KEY' with your actual Google Maps API key -->
             <iframe
                 src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d58430.489375892466!2d90.440813!3d23.75074600000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sbd!4v1730213849437!5m2!1sen!2sbd"
-                width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy"
+                width="445" height="300" style="border:0;" allowfullscreen="" loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade"></iframe>
 
         </div>
 
-        <div class="perticipants">
+        <div class="perticipants card  mx-auto p-3">
             <h2>Participants</h2>
-            <ul>
+            <ul class="list-group">
                 {% for participant in event.participants.all %}
-                <li>{{ participant }}</li>
+                <li class="list-group-item">
+                    <i class="fa-solid fa-bookmark"></i> &nbsp; {{ participant|capfirst }}
+                </li>
                 {% endfor %}
             </ul>
         </div>
@@ -73,4 +75,6 @@
 
 
 </div>
+
+{% include 'includes/footer.html' %}
 {% endblock %}

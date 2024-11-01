@@ -2,10 +2,11 @@ import django.db
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login , logout 
+from django.contrib.auth.forms import AuthenticationForm
 
 import django.urls
 from .models import UserProfile
-from .forms import RegisterForm , LoginForm
+from .forms import RegisterForm 
 
 from event.models import Event
 
@@ -16,7 +17,7 @@ def register(request):
             form.save()
             UserProfile.objects.create(user=User.objects.get(username=form.cleaned_data['username']))
 
-            return redirect('home')
+            return redirect('login')
         else:
             return render(
                 request, "auth_app/register.html", {"form": form}
@@ -29,20 +30,28 @@ def register(request):
 
 
 def login_user(request):
-    form = LoginForm()
+    form = AuthenticationForm()
     if request.method == 'POST':
-        form = LoginForm(request.POST)
+        # form = AuthenticationForm(data=request.POST)
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        # print('form data', form)
+        print(username, password)
+        
         # print(form.cleaned_data)
         # exit()
-        if form.is_valid():
-            cd = form.cleaned_data
-            user = authenticate(request, username=cd['username'], password=cd['password'])
+        if username and password:
+            
+            user = authenticate(request, username=username, password=password)
+
+            print('user', user)
             if user is not None:
                 login(request, user)
                 return redirect('home')
-        else:
-            return render(request, 'auth_app/login.html', {'form': form,'error': form.errors})
-    
+            else:
+                print('user not found')
+                return render(request, 'auth_app/login.html', {'error':'username or password is incorrect'})
+
     return render(request, 'auth_app/login.html', {'form':form})
 
 
@@ -63,7 +72,7 @@ def profile(request, user_id=None):
         return render(request, 'auth_app/profile.html', context)
     else:
         return redirect('home')
-    
+
 def update_profile(request, user_id= None):
     user = User.objects.get(id=user_id)
     profile = UserProfile.objects.get(user=user)
